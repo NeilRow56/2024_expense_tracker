@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/popover";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Currencies, Currency } from "@/lib/currencies";
+import { UserSettings } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
 
 export function CurrencyComboBox() {
   const [open, setOpen] = React.useState(false);
@@ -28,6 +30,12 @@ export function CurrencyComboBox() {
   const [selectedOption, setSelectedOption] = React.useState<Currency | null>(
     null
   );
+
+  const userSettings = useQuery<UserSettings>({
+    queryKey: ["userSettings"],
+    queryFn: () => fetch("/api/user-settings").then((res) => res.json()),
+  });
+  console.log("@@@ USER SETTINGS ", userSettings);
 
   if (isDesktop) {
     return (
