@@ -20,6 +20,7 @@ import React, { useCallback } from "react";
 import { Button } from "../ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import CategoryRow from "./CategoryRow";
 
 interface CategoryPickerProps {
   type: TransactionType;
@@ -58,7 +59,11 @@ export default function CategoryPicker({
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          Category Row
+          {selectedCategory ? (
+            <CategoryRow category={selectedCategory} />
+          ) : (
+            "Select category"
+          )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -87,7 +92,7 @@ export default function CategoryPicker({
                       setOpen((prev) => !prev);
                     }}
                   >
-                    Category Row
+                    <CategoryRow category={category} />
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4 opacity-0",
