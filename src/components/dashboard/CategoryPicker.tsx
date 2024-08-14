@@ -21,6 +21,7 @@ import { Button } from "../ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import CategoryRow from "./CategoryRow";
+import CreateCategoryDialog from "./CreateCategoryDialog";
 
 interface CategoryPickerProps {
   type: TransactionType;
@@ -74,7 +75,7 @@ export default function CategoryPicker({
           }}
         >
           <CommandInput placeholder="Search category..." />
-          Category Dialog
+          <CreateCategoryDialog type={type} successCallback={successCallback} />
           <CommandEmpty>
             <p>Category not found</p>
             <p className="text-xs text-muted-foreground">
