@@ -33,11 +33,18 @@ import {
 } from "@/schemas/categories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Category } from "@prisma/client";
-import { CircleOff, PlusSquare } from "lucide-react";
-import React, { ReactNode, useState } from "react";
+import { CircleOff, Loader2, PlusSquare } from "lucide-react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
+import { CreateCategory } from "@/actions/categories";
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface CreateCategoryDialogProps {
   type: TransactionType;
@@ -57,6 +64,47 @@ export default function CreateCategoryDialog({
       type,
     },
   });
+
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: CreateCategory,
+    onSuccess: async (data: Category) => {
+      form.reset({
+        name: "",
+        icon: "",
+        type,
+      });
+
+      toast.success(`Category ${data.name} created successfully 🎉`, {
+        id: "create-category",
+      });
+
+      successCallback(data);
+
+      await queryClient.invalidateQueries({
+        queryKey: ["categories"],
+      });
+
+      setOpen((prev) => !prev);
+    },
+    onError: () => {
+      toast.error("Something went wrong - Duplicate entry?", {
+        id: "create-category",
+      });
+    },
+  });
+
+  const onSubmit = useCallback(
+    (values: CreateCategorySchemaType) => {
+      toast.loading("Creating category...", {
+        id: "create-category",
+      });
+      mutate(values);
+    },
+    [mutate]
+  );
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -91,7 +139,7 @@ export default function CreateCategoryDialog({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={() => {}} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
               name="name"
@@ -170,7 +218,10 @@ export default function CreateCategoryDialog({
               Cancel
             </Button>
           </DialogClose>
-          <Button onClick={() => {}}>Create</Button>
+          <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
+            {!isPending && "Create"}
+            {isPending && <Loader2 className="animate-spin" />}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
