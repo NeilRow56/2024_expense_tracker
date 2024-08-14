@@ -96,13 +96,13 @@ export default function CreateTransactionDialog({
                 </FormItem>
               )}
             />
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center justify-between  gap-2">
               <FormField
                 control={form.control}
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Category</FormLabel>
+                    <FormLabel className="mr-3">Category</FormLabel>
                     <FormControl>
                       <CategoryPicker type={type} onChange={() => {}} />
                     </FormControl>

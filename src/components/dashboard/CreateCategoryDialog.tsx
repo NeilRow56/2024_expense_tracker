@@ -36,6 +36,8 @@ import { Category } from "@prisma/client";
 import { CircleOff, PlusSquare } from "lucide-react";
 import React, { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
 
 interface CreateCategoryDialogProps {
   type: TransactionType;
@@ -139,7 +141,12 @@ export default function CreateCategoryDialog({
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-full">
-                        Picker Component
+                        <Picker
+                          data={data}
+                          onEmojiSelect={(emoji: { native: string }) => {
+                            field.onChange(emoji.native);
+                          }}
+                        />
                       </PopoverContent>
                     </Popover>
                   </FormControl>
@@ -160,10 +167,10 @@ export default function CreateCategoryDialog({
                 form.reset();
               }}
             >
-              Create
+              Cancel
             </Button>
           </DialogClose>
-          <Button onClick={() => {}}>Cancel</Button>
+          <Button onClick={() => {}}>Create</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
