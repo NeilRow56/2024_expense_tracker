@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useCallback } from "react";
 
 import { ReactNode } from "react";
 import {
@@ -45,6 +45,13 @@ export default function CreateTransactionDialog({
       date: new Date(),
     },
   });
+
+  const handleCategoryChange = useCallback(
+    (value: string) => {
+      form.setValue("category", value);
+    },
+    [form]
+  );
 
   return (
     <Dialog>
@@ -96,6 +103,7 @@ export default function CreateTransactionDialog({
                 </FormItem>
               )}
             />
+
             <div className="flex items-center justify-between  gap-2">
               <FormField
                 control={form.control}
@@ -104,7 +112,10 @@ export default function CreateTransactionDialog({
                   <FormItem>
                     <FormLabel className="mr-3">Category</FormLabel>
                     <FormControl>
-                      <CategoryPicker type={type} onChange={() => {}} />
+                      <CategoryPicker
+                        type={type}
+                        onChange={handleCategoryChange}
+                      />
                     </FormControl>
                     <FormDescription>
                       Select a category for this transaction
