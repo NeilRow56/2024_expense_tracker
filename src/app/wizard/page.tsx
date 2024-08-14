@@ -48,7 +48,9 @@ export default async function WizardPage() {
       </Card>
       <Separator />
       <Button className="w-full" asChild>
-        <Link href={"/dashboard"}>Save</Link>
+        <Link href={"/dashboard"}>
+          Currency selected - transfer to dashboard
+        </Link>
       </Button>
       <div className="mt-8">
         <Logo />

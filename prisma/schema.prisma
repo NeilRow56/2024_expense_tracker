@@ -27,24 +27,18 @@ model User {
  profileImage    String? 
  role            UserRole     @default(USER)
  colorScheme     String       @default("theme-orange")
- currency        String       @default("GBP")
  createdAt       DateTime     @default(now())
  updatedAt       DateTime     @updatedAt
-userSettings     UserSettings[]
-categories       Category[]
-transactions     Transaction[]
-monthHistory     MonthHistory[]
-yearHistory      YearHistory[]
 
 }
 
 
 
 model UserSettings {
-  id             String   @id @default(cuid()) @map("_id") @db.String
-  currency       String   @unique 
-  user           User     @relation(fields: [userId], references: [id])
-  userId         String   @db.String
+  userId         String @id   @map("_id") @db.String          
+  currency       String    
+  
+          
 }
 
 model Transaction {
@@ -57,7 +51,6 @@ model Transaction {
     type          String      @default("income")
     category      String
     categoryIcon  String
-    user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String @db.String
 
     
@@ -70,7 +63,7 @@ model Category {
     type          String   @default("income")
     createdAt     DateTime @default(now())
     userId        String   @db.String
-    user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    
 
     @@unique([name, userId, type])
 }
@@ -82,7 +75,6 @@ model MonthHistory {
     year          Int
     income        Float
     expense       Float
-    user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String @db.String
 }
 
@@ -92,6 +84,5 @@ model YearHistory {
     year          Int
     income        Int
     expense       Int
-    user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId        String  @db.String
 }
