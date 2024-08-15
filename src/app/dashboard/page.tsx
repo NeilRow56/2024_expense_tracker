@@ -1,4 +1,5 @@
 import CreateTransactionDialog from "@/components/dashboard/CreateTransactionDialog";
+import Overview from "@/components/dashboard/Overview";
 import { Button } from "@/components/ui/button";
 import db from "@/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
@@ -54,6 +55,7 @@ const DashBoardPage = async () => {
           </div>
         </div>
       </div>
+      <Overview userSettings={userSettings} />
     </div>
   );
 };
