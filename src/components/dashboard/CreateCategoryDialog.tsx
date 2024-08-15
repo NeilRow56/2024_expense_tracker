@@ -145,7 +145,7 @@ export default function CreateCategoryDialog({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Category" {...field} />
+                    <Input id="name" placeholder="Category" {...field} />
                   </FormControl>
                   <FormDescription>
                     This is how your category will appear in the app

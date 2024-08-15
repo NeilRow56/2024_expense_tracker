@@ -7,6 +7,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -45,6 +46,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateTransaction } from "@/actions/transactions";
 import { toast } from "sonner";
 import { DateToUTCDate } from "@/lib/helpers";
+import { Label } from "../ui/label";
 
 interface TransactionDialogProps {
   trigger: ReactNode;
@@ -58,6 +60,8 @@ export default function CreateTransactionDialog({
   const form = useForm<CreateTransactionSchemaType>({
     resolver: zodResolver(CreateTransactionSchema),
     defaultValues: {
+      description: "",
+      amount: 0,
       type: type,
       date: new Date(),
     },
@@ -127,6 +131,7 @@ export default function CreateTransactionDialog({
             </span>{" "}
             transaction
           </DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -137,7 +142,7 @@ export default function CreateTransactionDialog({
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input defaultValue={""} {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormDescription>
                     Transaction description (optional)
@@ -152,7 +157,7 @@ export default function CreateTransactionDialog({
                 <FormItem>
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
-                    <Input defaultValue={0} type="number" {...field} />
+                    <Input type="number" {...field} />
                   </FormControl>
                   <FormDescription>
                     Transaction amount (required)
@@ -167,9 +172,7 @@ export default function CreateTransactionDialog({
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="mr-3 font-semibold">
-                      Category
-                    </FormLabel>
+                    <Label className="mr-3 font-semibold">Category</Label>
                     <FormControl>
                       <CategoryPicker
                         type={type}
