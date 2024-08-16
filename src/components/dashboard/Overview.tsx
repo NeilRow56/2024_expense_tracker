@@ -11,18 +11,22 @@ import { DateRangePicker } from "../ui/date-range-picker";
 import { toast } from "sonner";
 import { MAX_DATE_RANGE_DAYS } from "@/lib/constants";
 
-interface UserSettingsProps {
+export default function Overview({
+  userSettings,
+}: {
   userSettings: UserSettings;
-}
-
-export default function Overview({ userSettings }: UserSettingsProps) {
+}) {
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: startOfMonth(new Date()),
     to: new Date(),
   });
+
   return (
     <>
-      <div className="container flex flex-wrap items-end justify-between gap-2 py-6">
+      <div
+        className="container flex flex-wrap items-end justify-between gap-2 
+      py-6"
+      >
         <h2 className="text-3xl font-bold">Overview</h2>
         <div className="flex items-center gap-3">
           <DateRangePicker
@@ -42,12 +46,17 @@ export default function Overview({ userSettings }: UserSettingsProps) {
               }
 
               setDateRange({ from, to });
+              return;
             }}
           />
         </div>
       </div>
       <div className="container flex w-full flex-col gap-2">
-        <StatsCards />
+        <StatsCards
+          userSettings={userSettings}
+          from={dateRange.from}
+          to={dateRange.to}
+        />
 
         <CategoriesStats />
       </div>
