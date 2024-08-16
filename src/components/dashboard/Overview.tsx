@@ -58,7 +58,11 @@ export default function Overview({
           to={dateRange.to}
         />
 
-        <CategoriesStats />
+        <CategoriesStats
+          userSettings={userSettings}
+          from={dateRange.from}
+          to={dateRange.to}
+        />
       </div>
     </>
   );
