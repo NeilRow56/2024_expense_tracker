@@ -26,10 +26,6 @@ const links = [
     name: "Transactions",
     href: "/dashboard/transactions",
   },
-  {
-    name: "Currency",
-    href: "/wizard",
-  },
 ];
 
 export function DashboardNavigation() {
