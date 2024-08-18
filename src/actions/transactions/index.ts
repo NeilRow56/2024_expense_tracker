@@ -49,25 +49,5 @@ export async function CreateTransaction(form: CreateTransactionSchemaType) {
         categoryIcon: categoryRow.icon,
       },
     }),
-
-    // Update month and year totals
   ]);
 }
-
-// async function sumTotalAmountByMonth() {
-//   const transactions = await db.transaction.findMany();
-
-//   const transactionsByMonth = transactions.reduce(
-//     (result: any, { createdAt, amount }) => {
-//       const month = createdAt.toLocaleString("default", { month: "long" });
-//       result[month] = (result[month] || 0) + amount;
-//       return result;
-//     }
-//   );
-
-//   return transactionsByMonth;
-// }
-
-// sumTotalAmountByMonth()
-//   .then((salesByMonth) => console.log(salesByMonth))
-//   .catch((error) => console.error(error));

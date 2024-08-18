@@ -1,7 +1,26 @@
 "use client";
 
+import { GetTransactionHistoryResponseType } from "@/app/api/transactions-history/route";
+import { DateToUTCDate } from "@/lib/helpers";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-export default function TransactionTable() {
+interface Props {
+  from: Date;
+  to: Date;
+}
+
+export default function TransactionTable({ from, to }: Props) {
+  const history = useQuery<GetTransactionHistoryResponseType>({
+    queryKey: ["transactions", "history", from, to],
+    queryFn: () =>
+      fetch(
+        `/api/transactions-history?from=${DateToUTCDate(
+          from
+        )}&to=${DateToUTCDate(to)}`
+      ).then((res) => res.json()),
+  });
+
+  console.log(history);
   return <div>TransactionTable</div>;
 }
