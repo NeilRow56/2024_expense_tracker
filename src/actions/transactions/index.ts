@@ -51,3 +51,36 @@ export async function CreateTransaction(form: CreateTransactionSchemaType) {
     }),
   ]);
 }
+
+export async function DeleteTransaction(id: string) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect("/");
+  }
+
+  const transaction = await db.transaction.findUnique({
+    where: {
+      userId: user.id,
+      id,
+    },
+  });
+
+  if (!transaction) {
+    throw new Error("bad request");
+  }
+
+  await db.$transaction([
+    // Delete transaction from db
+    db.transaction.delete({
+      where: {
+        id,
+        userId: user.id,
+      },
+    }),
+    // Update month history
+
+    // Update year history
+  ]);
+}

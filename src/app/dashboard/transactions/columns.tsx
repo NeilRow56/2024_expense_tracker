@@ -15,6 +15,9 @@ import Link from "next/link";
 import { GetTransactionHistoryResponseType } from "@/app/api/transactions-history/route";
 import { DataTableColumnHeader } from "@/components/datatable/ColumnHeader";
 import { cn } from "@/lib/utils";
+import { MoreHorizontal, TrashIcon } from "lucide-react";
+import { useState } from "react";
+import DeleteTransactionDialog from "@/components/dashboard/DeleteTransactionDialog";
 
 // This type is used to define the shape of our data. We have used the type from the get function and have selected one element.
 // You can use a Zod schema here if you want.
@@ -64,7 +67,11 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
   {
     accessorKey: "type",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Type" />
+      <DataTableColumnHeader
+        column={column}
+        title="Type"
+        className="justify-end"
+      />
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -85,7 +92,11 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
   {
     accessorKey: "amount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Amount" />
+      <DataTableColumnHeader
+        column={column}
+        title="Amount"
+        className="justify-end"
+      />
     ),
     cell: ({ row }) => (
       <p className="text-md rounded-lg bg-gray-400/5 p-2 text-right font-medium">
@@ -93,4 +104,44 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
       </p>
     ),
   },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => <RowActions transaction={row.original} />,
+  },
 ];
+
+function RowActions({ transaction }: { transaction: TransactionHistoryRow }) {
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  return (
+    <>
+      <DeleteTransactionDialog
+        open={showDeleteDialog}
+        setOpen={setShowDeleteDialog}
+        transactionId={transaction.id}
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant={"ghost"} className="h-8 w-8 p-0 ">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="flex items-center gap-2"
+            onSelect={() => {
+              setShowDeleteDialog((prev) => !prev);
+            }}
+          >
+            <TrashIcon className="h-4 w-4 text-muted-foreground" />
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
+  );
+}

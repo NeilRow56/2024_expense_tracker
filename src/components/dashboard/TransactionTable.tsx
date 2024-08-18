@@ -153,7 +153,7 @@ export default function TransactionTable({ from, to }: Props) {
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id}>
+                      <TableHead key={header.id} className="justify-end">
                         {header.isPlaceholder
                           ? null
                           : flexRender(
